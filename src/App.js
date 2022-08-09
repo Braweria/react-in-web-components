@@ -1,23 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { Task } from "./Task";
+import "./App.css";
+import { useEffect, useState } from "react";
 
-function App() {
+function App({ userId }) {
+  const [tasks, setTasks] = useState([]);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    async function getTasks(userId) {
+      try {
+        const response = await fetch(
+          `https://dummyjson.com/todos/user/${userId}`
+        );
+        const todos = await response.json();
+        setTasks((prev) => [...prev, ...todos.todos]);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    async function getUser(userId) {
+      try {
+        const response = await fetch(`https://dummyjson.com/users/${userId}`);
+        const user = await response.json();
+        setUser(user);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getTasks(userId);
+    getUser(userId);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ margin: "1rem" }}>
+      <section>
+        <h1>
+          Welcome Back, {user.firstName} {user.lastName}
+        </h1>
+        <ul>
+          {tasks.map((task) => (
+            <Task key={task.id + Math.random()} {...task} />
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
