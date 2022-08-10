@@ -1,6 +1,8 @@
-import { Task } from "./Task";
 import "./App.css";
 import { useEffect, useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { Profile } from "./Profile";
+import { TasksPage } from "./TasksPage";
 
 function App({ userId }) {
   const [tasks, setTasks] = useState([]);
@@ -31,7 +33,7 @@ function App({ userId }) {
 
     getTasks(userId);
     getUser(userId);
-  }, []);
+  }, [userId]);
 
   return (
     <div style={{ margin: "1rem" }}>
@@ -39,11 +41,18 @@ function App({ userId }) {
         <h1>
           Welcome Back, {user.firstName} {user.lastName}
         </h1>
-        <ul>
-          {tasks.map((task) => (
-            <Task key={task.id + Math.random()} {...task} />
-          ))}
-        </ul>
+        <menu style={{ backgroundColor: "salmon" }}>
+          <li>
+            <Link to="/profile">Profile</Link>
+          </li>
+          <li>
+            <Link to="/">Tasks</Link>
+          </li>
+        </menu>
+        <Routes>
+          <Route path="/profile" element={<Profile user={user} />} />
+          <Route path="/" element={<TasksPage tasks={tasks} />} />
+        </Routes>
       </section>
     </div>
   );
