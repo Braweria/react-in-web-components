@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 
 // (function () {
 //   // eslint-disable-next-line strict
@@ -79,9 +79,9 @@ class MyApp extends HTMLElement {
     const root = ReactDOM.createRoot(mountPoint);
     root.render(
       <React.StrictMode>
-        <BrowserRouter>
+        <HashRouter>
           <App userId={userId} />
-        </BrowserRouter>
+        </HashRouter>
       </React.StrictMode>
     );
   }
